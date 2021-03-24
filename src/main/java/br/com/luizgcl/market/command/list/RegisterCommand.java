@@ -12,6 +12,11 @@ public class RegisterCommand extends Command {
 
     DecimalFormat DECIMAL_FORMAT = new DecimalFormat("##.##");
 
+
+    /*
+    * Comando só utilizado para testes, futuramente irei adicionar a implementação
+    * com o banco de dados.
+    * */
     @Override
     public void handle(String[] args) {
         if (args.length != 4) {
