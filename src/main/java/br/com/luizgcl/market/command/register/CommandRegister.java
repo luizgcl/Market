@@ -6,6 +6,7 @@ import org.reflections.Reflections;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CommandRegister implements ICommand {
 
@@ -26,11 +27,16 @@ public class CommandRegister implements ICommand {
 
     @Override
     public void execute(String[] args) {
+        AtomicBoolean found = new AtomicBoolean(false);
         commands.forEach(command -> {
             if (command.aliases.contains(args[0])) {
                 command.handle(args);
+                found.set(true);
             }
         });
+        if (!found.get()) {
+            System.out.println("Comando não encontrado! Use: \"help\" Para saber todos os comandos.");
+        }
     }
 
     public static Set<Command> getCommands() {

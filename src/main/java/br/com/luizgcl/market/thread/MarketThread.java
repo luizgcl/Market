@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class MarketThread extends Thread {
 
     public MarketThread() {
-        super("SuperMercado");
+        super("Super-Mercado");
     }
 
     @Override

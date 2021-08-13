@@ -1,6 +1,8 @@
 package br.com.luizgcl.market.command.list;
 
+import br.com.luizgcl.market.MarketMain;
 import br.com.luizgcl.market.command.type.Command;
+import br.com.luizgcl.market.product.Product;
 
 import java.text.DecimalFormat;
 
@@ -11,7 +13,6 @@ public class RegisterCommand extends Command {
     }
 
     DecimalFormat DECIMAL_FORMAT = new DecimalFormat("##.##");
-
 
     /*
     * Comando só utilizado para testes, futuramente irei adicionar a implementação
@@ -26,7 +27,7 @@ public class RegisterCommand extends Command {
         }
 
         String productName = args[1];
-        double productValue = Double.parseDouble(args[2]);
+        double productValue = Double.parseDouble(args[2].replace(",", "."));
         double productProfit = Double.parseDouble(args[3].replace("%", "").replace(",", "."));
 
         System.out.println("Parabéns! Você registrou o Produto '" + productName + "'");
@@ -35,6 +36,10 @@ public class RegisterCommand extends Command {
 
         productProfit = productProfit / 100;
         double finalValue = productValue + (productValue * productProfit);
+
+        Product product = new Product("789000001", productName, productValue, productProfit);
+
+        MarketMain.getProductData().create(product);
 
         System.out.println("\n Valor estipulado de: R$" + DECIMAL_FORMAT.format(finalValue));
     }
