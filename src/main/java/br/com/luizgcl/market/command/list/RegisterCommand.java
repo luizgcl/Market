@@ -15,33 +15,38 @@ public class RegisterCommand extends Command {
     DecimalFormat DECIMAL_FORMAT = new DecimalFormat("##.##");
 
     /*
-    * Comando só utilizado para testes, futuramente irei adicionar a implementação
-    * com o banco de dados.
+    * Comando funcionando perfeitamente, em breve irei fazer algumas mudanças
     * */
     @Override
     public void handle(String[] args) {
-        if (args.length != 4) {
+        if (args.length != 5) {
             System.out.println("Você precisa informar os argumentos!");
             System.out.println("Digite: reg (Nome do Produto) (Preço de Custo) (Porcentagem de Lucro).");
             return;
         }
 
-        String productName = args[1];
-        double productValue = Double.parseDouble(args[2].replace(",", "."));
-        double productProfit = Double.parseDouble(args[3].replace("%", "").replace(",", "."));
+        String barCode = args[1];
+        String productName = args[2];
+        double productValue = Double.parseDouble(args[3].replace(",", "."));
+        double productProfit = Double.parseDouble(args[4].replace("%", "").replace(",", "."));
+
+        try {
+            Long.parseLong(barCode);
+        } catch (NumberFormatException e) {
+            System.err.println("Ocorreu algum erro ao ler código de barras!");;
+        }
 
         System.out.println("Parabéns! Você registrou o Produto '" + productName + "'");
+        System.out.println("Código de barras: " + barCode);
         System.out.println("Valor de custo: R$" + DECIMAL_FORMAT.format(productValue));
         System.out.println("Lucro de: " + DECIMAL_FORMAT.format(productProfit) + "%");
 
         productProfit = productProfit / 100;
         double finalValue = productValue + (productValue * productProfit);
 
-        Product product = new Product("789000001", productName, productValue, productProfit);
-
-        MarketMain.getProductData().create(product);
-
         System.out.println("\n Valor estipulado de: R$" + DECIMAL_FORMAT.format(finalValue));
+
+        MarketMain.getProductData().create(barCode, productName, productValue, productProfit);
     }
 
 }
